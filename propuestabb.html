@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Te quieres casar conmigo?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Cedarville+Cursive&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-family: 'Cedarville Cursive', cursive;
+            font-size: 4rem;
+            margin: 0;
+            color: #000;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 20px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #yes {
+            background-color: #28a745;
+            color: white;
+        }
+        #no {
+            background-color: #dc3545;
+            color: white;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <center><h1>¿Te quieres casar conmigo?</h1></center>
+    <img src="img/gatitofiufiu.jpeg" alt="Espacio para la imagen">
+    <div class="buttons">
+        <button id="yes">Sí</button>
+        <button id="no">No</button>
+    </div>
+
+    <audio id="wedding-music" src="img/Mendelssohn's_Wedding_March_[YouConvert.net].mp3"></audio>
+
+    <script>
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+        const weddingMusic = document.getElementById('wedding-music');
+
+        yesButton.addEventListener('click', () => {
+            weddingMusic.play();
+            alert('Un gran futuro nos espera, mi amor ❤️');
+        });
+
+        noButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/icons8-favorite-72.png" type="image/x-icon">
+    <title>Tears in my heart</title>
+    <style>
+        .btn-custom {
+            background-color: #002f5c;
+            color: #fff;
+            border-color: #002f5c;
+        }
+
+        .btn-custom:hover {
+            background-color: #001f40;
+            border-color: #001f40;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #00132b, #002f5c);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            flex-direction: column;
+        }
+
+        .heart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Cambiado para posicionar textos relativos al contenedor */
+        }
+
+        .heart {
+            width: 150px;
+            height: 135px;
+            background-color: #ff0066;
+            transform: rotate(-45deg);
+            animation: heartbeat 1s infinite;
+            box-shadow: 0 0 30px #ff3399, 0 0 60px #ff3399, 0 0 90px #ff3399;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            width: 150px;
+            height: 135px;
+            position: absolute;
+            border-radius: 50%;
+            background-color: #ff0066;
+        }
+
+        .heart::before {
+            top: -85px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 85px;
+            top: 0;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1) rotate(-45deg);
+                box-shadow: 0 0 30px #ff3399, 0 0 60px #ff3399, 0 0 90px #ff3399;
+            }
+            50% {
+                transform: scale(1.2) rotate(-45deg);
+                box-shadow: 0 0 50px #ff3399, 0 0 80px #ff3399, 0 0 120px #ff3399;
+            }
+        }
+
+        .neon-text {
+            margin-top: 80px;
+            font-size: 36px;
+            color: #fff;
+            text-shadow: 0 0 15px #00e6e6, 0 0 30px #00e6e6, 0 0 45px #00e6e6, 0 0 60px #00e6e6;
+            transition: 0.3s ease-in-out;
+            text-align: center;
+        }
+
+        .pulse-text {
+            font-size: 24px;
+            color: #fff;
+            position: absolute;
+            top: -170px; /* Ajustado para estar justo encima del corazón */
+            text-shadow: 0 0 15px #ff3399, 0 0 30px #ff3399;
+            text-align: center; /* Asegura que el texto esté centrado */
+        }
+
+        .arrow {
+            position: absolute;
+            top: -140px; /* Ajustado para estar un poco más cerca del corazón */
+            font-size: 36px;
+            color: #ff3399;
+            text-shadow: 0 0 15px #ff3399;
+            text-align: center; /* Asegura que la flecha esté centrada */
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff3399;
+            border-radius: 50%;
+            animation: fly 0.8s forwards;
+        }
+
+        @keyframes fly {
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container">
+        <div class="pulse-text">Pulsa</div>
+        <div class="arrow">⬇️</div>
+        <div class="heart" id="heart"></div>
+        <div class="neon-text" id="neonText">Te quiero :3</div>
+    </div>
+
+    <audio id="popSound">
+        <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
+    </audio>
+    <br>
+    <a href="index.html" class="btn-custom">Volver atras</a>
+    <script>
+        const heart = document.getElementById('heart');
+        const neonText = document.getElementById('neonText');
+        const popSound = document.getElementById('popSound');
+
+        const phrases = [
+         "Te adoro Mari", "Te amo mi niña", "Eres perfecta mi amor", "Eres increíble bb", "Eres mi vida", "Eres mi amor",
+        "Mi todo", "Eres única", "Mi razón de ser sos vos", "Siempre contigo quiero vivir",
+    "Eres mi paz y luz", "Te pienso siempre", "Me haces feliz", "Eres lo mejor", "Mi corazón es tuyo", "La más grande maravilla",
+    "Solo tú", "Me completas", "Eres mi sol", "Solo tú me entiendes", "Mi alma te pertenece",
+    "Siempre en mi mente", "Eres mi hogar", "Contigo todo es mejor", "Te necesito", "Eres mi universo",
+    "Solo quiero verte feliz", "Eres mi refugio", "Mi vida es más bonita contigo", "Tú haces todo más fácil", "Te admiro tanto",
+    "Eres mi fuerza", "Me encantas", "Eres mi luz", "Eres mi destino", "Siempre contigo"
+    ];
+
+
+        let clickCount = 0;
+
+        function createExplosion(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.setProperty('--x', `${(Math.random() * 400 - 200)}px`);
+                particle.style.setProperty('--y', `${(Math.random() * 400 - 200)}px`);
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+
+        heart.addEventListener('click', (event) => {
+            const rect = heart.getBoundingClientRect();
+            const heartX = rect.left + rect.width / 2;
+            const heartY = rect.top + rect.height / 2;
+
+            if (clickCount < phrases.length) {
+                neonText.textContent = phrases[clickCount];
+                clickCount++;
+            } else {
+                clickCount = 0; // Reinicia el ciclo
+            }
+
+            createExplosion(heartX, heartY);
+            popSound.play();
+            heart.style.animation = 'explode 0.5s forwards';
+
+            setTimeout(() => {
+                heart.style.animation = 'heartbeat 1s infinite';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
